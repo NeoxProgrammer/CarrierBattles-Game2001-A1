@@ -48,7 +48,7 @@ public:
 		}
 	}
 
-	bool isDestroyed() {
+	bool isDestroyed() const {
 		if (structStrength <= 0) {
 			return true; 
 		}
@@ -59,19 +59,19 @@ public:
 	}
 
 
-	string const getName() {
+	string getName() const {
 		return name;
 	}
 
-	int const getDamage() {
+	int getDamage() const {
 		return damage;
 	}
 
-	int const getStructStrength() {
+	int getStructStrength() const {
 		return structStrength;
 	}
 
-	int const getMaxStructStrength() {
+	int getMaxStructStrength() const {
 		return maxStructStrength;
 	}
 
@@ -83,9 +83,6 @@ public:
 		oss << "Damage: " << damage << "\n";
 		return oss.str();
 	}
-
-	
-
 };
 
 
