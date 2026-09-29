@@ -3,5 +3,5 @@
     <Platform Name="x64" />
     <Platform Name="x86" />
   </Configurations>
-  <Project Path="CarrierBattles.vcxproj" />
+  <Project Path="CarrierBattles.vcxproj" Id="11ac02fc-8e5c-41a2-bbd9-2cc9b183d00e" />
 </Solution>

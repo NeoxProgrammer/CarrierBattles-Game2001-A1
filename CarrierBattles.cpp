@@ -1,5 +1,5 @@
 // CarrierBattles.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
+
 //student number 101545977
 
 
@@ -13,7 +13,18 @@ using namespace std;
 #include <utility> 
 
 
+class Carrier {
+private: 
+	string name; 
+	Fighter** baylist; 
+	int maxBays; 
+	int numFighters; 
 
+	
+
+	
+
+};
 
 
 class Fighter {
