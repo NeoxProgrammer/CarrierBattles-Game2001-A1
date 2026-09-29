@@ -12,18 +12,76 @@ using namespace std;
 #include <string>
 #include <utility> 
 
+constexpr int HIT_THRESHOLD = 50;   // a roll of 50-100 out of 100 is a hit
+constexpr int REPAIR_PERCENT = 5;   // repair 5% of max structural strength
+
+
+
+
 
 class Carrier {
 private: 
 	string name; 
-	Fighter** baylist; 
+	Fighter** bayList; 
 	int maxBays; 
 	int numFighters; 
+public:
 
-	
 
-	
+	Carrier(const string& name, int maxBays) {
+		this->name = name; 
+		this->maxBays = maxBays; 
+		bayList = new Fighter* [maxBays](); 
+		this->numFighters = 0; 
+	}
 
+	~Carrier() {
+
+		for (int i = 0; i < numFighters; i++) {
+			delete bayList[i];
+		
+
+		}
+		delete[] bayList; 
+
+		bayList = nullptr; 
+	}
+
+
+	bool loadFighter(Fighter* fighter) {
+		if (numFighters < maxBays) {
+			bayList[numFighters] = fighter; 
+			numFighters++; 
+			return true; 
+		}
+		return false; 
+	}
+
+	Fighter* launchNextFighter() {
+
+		if (numFighters == 0) {
+			return nullptr; 
+		}
+		if (numFighters > 0) {
+
+			Fighter* removedFighter = bayList[0]; 
+			
+			for (int i = 1; i < numFighters; i++) {
+				bayList[i - 1] = bayList[i];
+			}
+			numFighters--; 
+			return removedFighter;
+		}
+	}
+
+	void repairAllFighters() {
+		for (int i = 0; i < numFighters; i++) {
+			Fighter* currentFighter = bayList[i];
+			int maxStrength = currentFighter->getMaxStructStrength(); 
+			int amountToIncreaseBy = maxStrength * REPAIR_PERCENT / 100;
+			currentFighter->repair(amountToIncreaseBy); 
+		}
+	}
 };
 
 
@@ -97,19 +155,9 @@ public:
 };
 
 
-
 int main()
 {
-    std::cout << "Hello World!\n";
+	std::cout << "Hello World!\n"; 
 }
 
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
 
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
