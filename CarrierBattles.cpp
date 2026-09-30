@@ -179,7 +179,7 @@ public:
 
 
 	void mergeSortByName() {
-		
+		mergeSortWorker(0,numFighters-1);
 	}
 
 
@@ -189,12 +189,67 @@ public:
 			mid = (lower + upper) / 2;
 			mergeSortWorker(lower, mid); 
 			mergeSortWorker(mid + 1, upper); 
+			merge(lower, mid, upper); 
 		}
 	}
 
+	void merge(int lo,int mid,int hi) {
+		int i, j,  k; 
+		int size = hi - lo + 1; 
+		Fighter** temp = new Fighter*[size]; 
+		i = lo; j = mid + 1; k = 0; 
+		while (i <= mid && j <= hi) {
+			string iName = bayList[i]->getName(); 
+			string jName = bayList[j]->getName(); 
+			if (iName < jName) {
+				temp[k] = bayList[i]; 
+				i++, k++; 
+			}
 
-	
+			else {
+				temp[k] = bayList[j]; 
+				j++, k++;
 
+			}
+		}
+
+		while (j <= hi) {
+			temp[k] = bayList[j]; 
+			j++, k++; 
+		}
+
+		while (i <= mid) {
+			temp[k] = bayList[i];
+			i++, k++; 
+		}
+
+		for (int x = 0; x < size; x++) {
+			bayList[lo + x] = temp[x]; 
+		}
+		delete[] temp; 
+	}
+
+	bool hasFighters() {
+		if (numFighters > 0) {
+			return true; 
+
+		}
+		return false; 
+	}
+
+
+	int getNumFighters() {
+		return numFighters; 
+	}
+
+
+	int getCapacity() {
+		return maxBays; 
+	}
+
+	string getName() {
+		return name; 
+	}
 };
 
 
