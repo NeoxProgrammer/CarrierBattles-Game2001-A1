@@ -58,7 +58,7 @@ public:
 	}
 
 
-	string getName() const {
+	const string& getName() const {
 		return name;
 	}
 
@@ -135,16 +135,18 @@ public:
 		if (numFighters == 0) {
 			return nullptr; 
 		}
-		if (numFighters > 0) {
 
-			Fighter* removedFighter = bayList[0]; 
+		
+
+		Fighter* removedFighter = bayList[0]; 
 			
-			for (int i = 1; i < numFighters; i++) {
-				bayList[i - 1] = bayList[i];
-			}
-			numFighters--; 
-			return removedFighter;
+		for (int i = 1; i < numFighters; i++) {
+			bayList[i - 1] = bayList[i];
 		}
+		numFighters--; 
+		bayList[numFighters] = nullptr;
+		return removedFighter;
+		
 	}
 	
 	void repairAllFighters() {
@@ -232,7 +234,7 @@ public:
 		delete[] temp; 
 	}
 
-	bool hasFighters() {
+	bool hasFighters() const {
 		if (numFighters > 0) {
 			return true; 
 
@@ -241,18 +243,53 @@ public:
 	}
 
 
-	int getNumFighters() {
+	int getNumFighters() const {
 		return numFighters; 
 	}
 
 
-	int getCapacity() {
+	int getCapacity() const {
 		return maxBays; 
 	}
 
-	string getName() {
+	const string& GetName() const{
 		return name; 
 	}
+
+
+	string getInfo() const {
+
+
+		if (numFighters <= 0) {
+			ostringstream oss2; 
+			oss2 << "Name: " << name << "\n";
+			oss2 << "Bays in use " << getNumFighters() << "\n";
+			oss2 << "Max capacity: " << getCapacity() << "\n";
+			oss2 << "No Fighters are loaded and ready to shoot"; 
+			return oss2.str(); 
+
+		}
+
+
+
+
+		ostringstream oss;
+		oss << "Name: " << name << "\n";
+		oss << " Bays in use: " << getNumFighters() <<"\n";
+		oss << "Max capacity: " << getCapacity() << "\n";
+		string mainString = "";
+		for (int i = 0; i < getNumFighters(); i++) {
+			string info = bayList[i]->getInfo() + "\n";
+			mainString += info + "";
+		}
+
+		oss << "info for the carrier is:\n" << mainString; 
+		return oss.str();
+	}
+
+
+
+
 };
 
 
