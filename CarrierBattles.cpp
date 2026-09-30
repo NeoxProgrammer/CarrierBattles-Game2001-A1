@@ -272,7 +272,6 @@ public:
 
 
 
-
 		ostringstream oss;
 		oss << "Name: " << name << "\n";
 		oss << " Bays in use: " << getNumFighters() <<"\n";
@@ -286,10 +285,6 @@ public:
 		oss << "info for the carrier is:\n" << mainString; 
 		return oss.str();
 	}
-
-
-
-
 };
 
 
