@@ -97,6 +97,9 @@ private:
 	int numFighters; 
 public:
 
+	Carrier(const Carrier&) = delete;
+	Carrier& operator=(const Carrier&) = delete;
+
 
 	Carrier(const string& name, int maxBays) {
 		this->name = name; 
