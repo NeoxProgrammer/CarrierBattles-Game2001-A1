@@ -141,6 +141,9 @@
   <ItemGroup>
     <ClCompile Include="CarrierBattles.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="shipData_small.txt" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

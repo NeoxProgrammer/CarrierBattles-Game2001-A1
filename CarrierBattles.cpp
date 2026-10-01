@@ -1,5 +1,4 @@
 // CarrierBattles.cpp : This file contains the 'main' function. Program execution begins and ends there.
-
 //student number 101545977
 
 
@@ -291,14 +290,65 @@ public:
 };
 
 
-Carrier* readCarrier(std::istream& in) {
 
+void stripTrailingWhitespace(string& s) {
+	while (!s.empty() && isspace(static_cast<unsigned char>(s.back()))) {
+		s.pop_back();
+	}
+}
+
+
+Carrier* readCarrier(std::istream& in) {
+	string carrierName;
+	getline(in >> std::ws, carrierName);
+	stripTrailingWhitespace(carrierName); 
+	if (in.fail()) {
+
+		return nullptr;
+	}
+
+	int maxBays, numFightersListed;
+	in >> maxBays >> numFightersListed;
+	if (in.fail()) {
+		return nullptr;
+	}// blank 2: read two ints
+
+	Carrier* c = new Carrier(carrierName, maxBays);               // blank 3: make a Carrier
+
+	for (int i = 0; i < numFightersListed; i++) { // blank 4: how many iterations?
+		string fighterName;
+		getline(in >> std::ws, fighterName); // blank 5
+		stripTrailingWhitespace(carrierName);
+		if (in.fail()) {
+			delete c; 
+			return nullptr;
+		}
+
+		int strength, damage;
+		in >> strength >> damage;    
+		if (in.fail()) {
+			delete c; 
+			return nullptr;
+		}// blank 6: read two ints
+
+		Fighter* f = new Fighter(fighterName, strength, damage);           // blank 7: make a Fighter
+
+		if (!c->loadFighter(f)) {                  // blank 8: did load fail?
+			cout << "Warning: " << fighterName << " could not be loaded\n";
+			delete f;                    // blank 9: don't leak it
+		}
+	}
+	return c;                     // blank 10
 }
 
 
 int main()
 {
-	std::cout << "Hello World!\n"; 
+	ifstream in("shipData_small.txt");
+	if (!in) {
+		cout << "Could not open file\n";
+		return 1;
+	}
 }
 
 
