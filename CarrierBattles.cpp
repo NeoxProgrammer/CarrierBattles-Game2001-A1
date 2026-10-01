@@ -298,7 +298,7 @@ void stripTrailingWhitespace(string& s) {
 }
 
 
-Carrier* readCarrier(std::istream& in) {
+Carrier* readCarrier(istream& in) {
 	string carrierName;
 	getline(in >> std::ws, carrierName);
 	stripTrailingWhitespace(carrierName); 
@@ -311,13 +311,13 @@ Carrier* readCarrier(std::istream& in) {
 	in >> maxBays >> numFightersListed;
 	if (in.fail()) {
 		return nullptr;
-	}// blank 2: read two ints
+	}
 
-	Carrier* c = new Carrier(carrierName, maxBays);               // blank 3: make a Carrier
+	Carrier* c = new Carrier(carrierName, maxBays);               
 
-	for (int i = 0; i < numFightersListed; i++) { // blank 4: how many iterations?
+	for (int i = 0; i < numFightersListed; i++) { 
 		string fighterName;
-		getline(in >> std::ws, fighterName); // blank 5
+		getline(in >> std::ws, fighterName); 
 		stripTrailingWhitespace(carrierName);
 		if (in.fail()) {
 			delete c; 
@@ -331,14 +331,14 @@ Carrier* readCarrier(std::istream& in) {
 			return nullptr;
 		}// blank 6: read two ints
 
-		Fighter* f = new Fighter(fighterName, strength, damage);           // blank 7: make a Fighter
+		Fighter* f = new Fighter(fighterName, strength, damage);           
 
-		if (!c->loadFighter(f)) {                  // blank 8: did load fail?
+		if (!c->loadFighter(f)) {                  
 			cout << "Warning: " << fighterName << " could not be loaded\n";
-			delete f;                    // blank 9: don't leak it
+			delete f;                    
 		}
 	}
-	return c;                     // blank 10
+	return c;                     
 }
 
 
