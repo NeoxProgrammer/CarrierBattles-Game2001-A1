@@ -3,7 +3,7 @@
 //student number 101545977
 
 
-using namespace std;
+
 #include <fstream>
 #include <iomanip>
 #include <iostream>
@@ -11,6 +11,8 @@ using namespace std;
 #include <sstream>
 #include <string>
 #include <utility> 
+
+using namespace std;
 
 constexpr int HIT_THRESHOLD = 50;   // a roll of 50-100 out of 100 is a hit
 constexpr int REPAIR_PERCENT = 5;   // repair 5% of max structural strength
@@ -252,7 +254,7 @@ public:
 		return maxBays; 
 	}
 
-	const string& GetName() const{
+	const string& getName() const{
 		return name; 
 	}
 
@@ -265,8 +267,9 @@ public:
 			oss2 << "Name: " << name << "\n";
 			oss2 << "Bays in use " << getNumFighters() << "\n";
 			oss2 << "Max capacity: " << getCapacity() << "\n";
-			oss2 << "No Fighters are loaded and ready to shoot"; 
+			oss2 << "No Fighters are loaded and ready to shoot" << "\n";
 			return oss2.str(); 
+
 
 		}
 
@@ -279,7 +282,7 @@ public:
 		string mainString = "";
 		for (int i = 0; i < getNumFighters(); i++) {
 			string info = bayList[i]->getInfo() + "\n";
-			mainString += info + "";
+			mainString += info;
 		}
 
 		oss << "info for the carrier is:\n" << mainString; 
@@ -288,7 +291,9 @@ public:
 };
 
 
+Carrier* readCarrier(std::istream& in) {
 
+}
 
 
 int main()
