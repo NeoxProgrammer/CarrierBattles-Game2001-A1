@@ -412,6 +412,51 @@ Fighter* duel(Fighter* f1, Fighter* f2, std::mt19937& rng) {
 
 }
 
+void battle(Carrier& c1, Carrier& c2, std::mt19937& rng) {
+	int duels = 0;
+	while (c1.hasFighters() && c2.hasFighters()) {
+		duels++;
+		c1.insertionSortByStrength();
+		c2.insertionSortByStrength();
+		Fighter* f1 = c1.launchNextFighter();
+		Fighter* f2 = c2.launchNextFighter();
+
+		cout << "Duel " << duels << ": "
+			<< f1->getName() << " (" << c1.getName() << ") vs "
+			<< f2->getName() << " (" << c2.getName() << ")\n";
+
+		Fighter* winner = duel(f1, f2, rng);
+
+		if (winner == f1) {
+			cout << f1->getName() << " returns to " << c1.getName()
+				<< " with " << f1->getStructStrength() << "/"
+				<< f1->getMaxStructStrength() << " structure.\n";
+			c1.loadFighter(f1);
+			delete f2;
+		}
+		else if (winner == f2) {
+			cout << f2->getName() << " returns to " << c2.getName()
+				<< " with " << f2->getStructStrength() << "/"
+				<< f2->getMaxStructStrength() << " structure.\n";
+			c2.loadFighter(f2);
+			delete f1;
+		}
+
+		c1.repairAllFighters();
+		c2.repairAllFighters();
+	}
+
+	if (c1.hasFighters()) {
+		cout << "*** " << c1.getName() << " wins the battle after "
+			<< duels << " duels with " << c1.getNumFighters()
+			<< " fighter(s) remaining. ***\n";
+	}
+	else if (c2.hasFighters()) {
+		cout << "*** " << c2.getName() << " wins the battle after "
+			<< duels << " duels with " << c2.getNumFighters()
+			<< " fighter(s) remaining. ***\n";
+	}
+}
 	
 
 int main()
@@ -425,6 +470,35 @@ int main()
 		cout << "Could not open file\n";
 		return 1;
 	}
+
+	Carrier* c1 = readCarrier(in); // Read the first carrier from the file
+	Carrier* c2 = readCarrier(in); // Read the second carrier from the file
+
+	if (c1 == nullptr || c2 == nullptr) {
+		cout << "Error reading carriers from file\n";
+		delete c1;
+		delete c2;
+		return 1;
+	}
+
+	c1->mergeSortByName();
+	c2->mergeSortByName();
+
+	c1->getInfo(); 
+	c2->getInfo();
+
+	battle(*c1, *c2, rng);
+	
+	c1->getInfo();
+	c2->getInfo();
+
+	delete c1;
+	delete c2;
+
+
+
+
+
 }
 
 
