@@ -412,16 +412,10 @@ Fighter* duel(Fighter* f1, Fighter* f2, std::mt19937& rng) {
 
 }
 
-
-
-
-
-
-		
+	
 
 int main()
 {
-
 
 	mt19937 rng(std::random_device{}()); // Initialize with random seed i think is what this does
 	
