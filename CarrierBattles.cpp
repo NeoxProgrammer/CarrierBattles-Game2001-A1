@@ -368,12 +368,50 @@ bool attack(Fighter& attacker, Fighter& defender, int round, std::mt19937& rng) 
 	}
 
 	else {
-		cout << "[R" << round << "] " << attacker.getName() << " misses " << defender.getName() << ".\n";
+		cout << "[R" << round << "] " << attacker.getName() << " misses " << defender.getName() << "\n";
 		return defender.isDestroyed();
 	}
 
 }
 
+Fighter* duel(Fighter* f1, Fighter* f2, std::mt19937& rng) {
+	int counter = 0;
+	while (true) {
+		counter++;
+		int whoGoesFirst = rollDie(rng, 2);
+		if (whoGoesFirst == 1) {
+			if (attack(*f1, *f2, counter, rng)) {
+				cout << "BOOOM! " << f2->getName() << " is destroyed!\n";
+				return f1;
+			}
+			if (attack(*f2, *f1, counter, rng)) {
+				cout << "BOOOM! " << f1->getName() << " is destroyed!\n";
+				return f2;
+			}
+		}
+
+		else if (whoGoesFirst == 2)		 {
+			if (attack(*f2, *f1, counter, rng)) {
+				cout << "BOOOM! " << f1->getName() << " is destroyed!\n";	
+				return f2;
+			}
+
+			if (attack(*f1, *f2, counter, rng)) {
+				cout << "BOOOM! " << f2->getName() << " is destroyed!\n";
+				return f1;
+			}		
+
+		}
+	}
+
+}
+
+
+
+
+
+
+		
 
 int main()
 {
