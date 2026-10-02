@@ -10,6 +10,7 @@
 #include <sstream>
 #include <string>
 #include <utility> 
+#include <cctype>
 
 using namespace std;
 
@@ -301,46 +302,51 @@ void stripTrailingWhitespace(string& s) {
 Carrier* readCarrier(istream& in) {
 	string carrierName;
 	getline(in >> std::ws, carrierName);
-	stripTrailingWhitespace(carrierName); 
-	if (in.fail()) {
+	stripTrailingWhitespace(carrierName);
 
+	if (in.fail()) {
 		return nullptr;
 	}
 
 	int maxBays, numFightersListed;
 	in >> maxBays >> numFightersListed;
+
 	if (in.fail()) {
 		return nullptr;
 	}
 
-	Carrier* c = new Carrier(carrierName, maxBays);               
+	Carrier* c = new Carrier(carrierName, maxBays);
 
-	for (int i = 0; i < numFightersListed; i++) { 
+	for (int i = 0; i < numFightersListed; i++) {
 		string fighterName;
-		getline(in >> std::ws, fighterName); 
-		stripTrailingWhitespace(carrierName);
+
+		getline(in >> std::ws, fighterName);
+		stripTrailingWhitespace(fighterName);  // FIXED
+
 		if (in.fail()) {
-			delete c; 
+			delete c;
 			return nullptr;
 		}
 
 		int strength, damage;
-		in >> strength >> damage;    
+		in >> strength >> damage;
+
 		if (in.fail()) {
-			delete c; 
+			delete c;
 			return nullptr;
-		}// blank 6: read two ints
+		}
 
-		Fighter* f = new Fighter(fighterName, strength, damage);           
+		Fighter* f = new Fighter(fighterName, strength, damage);
 
-		if (!c->loadFighter(f)) {                  
-			cout << "Warning: " << fighterName << " could not be loaded\n";
-			delete f;                    
+		if (!c->loadFighter(f)) {
+			cout << "Warning: " << fighterName
+				<< " could not be loaded\n";
+			delete f;
 		}
 	}
-	return c;                     
-}
 
+	return c;
+}
 
 int rollDie(std::mt19937& rng, int sides)
 {
