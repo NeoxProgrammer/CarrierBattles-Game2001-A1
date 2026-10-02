@@ -208,7 +208,7 @@ public:
 		while (i <= mid && j <= hi) {
 			string iName = bayList[i]->getName(); 
 			string jName = bayList[j]->getName(); 
-			if (iName < jName) {
+			if (iName <= jName) {
 				temp[k] = bayList[i]; 
 				i++, k++; 
 			}
@@ -462,7 +462,7 @@ void battle(Carrier& c1, Carrier& c2, std::mt19937& rng) {
 int main()
 {
 
-	mt19937 rng(std::random_device{}()); // Initialize with random seed i think is what this does
+	mt19937 rng(12345); // Initialize with random seed i think is what this does
 	
 
 	ifstream in("shipData_small.txt");
@@ -487,17 +487,19 @@ int main()
 	c1->getInfo(); 
 	c2->getInfo();
 
+	cout << c1->getInfo();
+	cout << c2->getInfo();
+
+
+
+
 	battle(*c1, *c2, rng);
 	
-	c1->getInfo();
-	c2->getInfo();
+	cout<<c1->getInfo();
+	cout<<c2->getInfo();
 
 	delete c1;
 	delete c2;
-
-
-
-
 
 }
 
