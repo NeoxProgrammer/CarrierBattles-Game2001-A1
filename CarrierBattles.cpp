@@ -342,8 +342,46 @@ Carrier* readCarrier(istream& in) {
 }
 
 
+int rollDie(std::mt19937& rng, int sides)
+{
+	uniform_int_distribution<int> dist(1, sides);
+	return dist(rng);
+}
+
+
+bool attack(Fighter& attacker, Fighter& defender, int round, std::mt19937& rng) {
+	// Roll a die to determine if the attack hits
+	int roll = rollDie(rng, 100);
+	if (roll >= HIT_THRESHOLD) {
+		int maxdamage = attacker.getDamage();
+		int damageAmount = rollDie(rng, maxdamage);
+		defender.reduceStructure(damageAmount);
+		cout << "[R" << round << "] "
+			<< attacker.getName() << " hits "
+			<< defender.getName() << " for "
+			<< damageAmount << " ("
+			<< defender.getName() << ": "
+			<< defender.getStructStrength() << "/"
+			<< defender.getMaxStructStrength() << ")\n";
+		
+		return defender.isDestroyed();
+	}
+
+	else {
+		cout << "[R" << round << "] " << attacker.getName() << " misses " << defender.getName() << ".\n";
+		return defender.isDestroyed();
+	}
+
+}
+
+
 int main()
 {
+
+
+	mt19937 rng(std::random_device{}()); // Initialize with random seed i think is what this does
+	
+
 	ifstream in("shipData_small.txt");
 	if (!in) {
 		cout << "Could not open file\n";
