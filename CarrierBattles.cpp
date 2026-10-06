@@ -1,5 +1,8 @@
 // CarrierBattles.cpp : This file contains the 'main' function. Program execution begins and ends there.
+
 //student number 101545977
+//Name: Bashaar Ali
+//Date: 2026-10-09
 
 
 
@@ -150,7 +153,7 @@ public:
 		}
 
 		
-
+		// remove the first fighter from the bay list and shift the remaining fighters to the left
 		Fighter* removedFighter = bayList[0]; 
 			
 		for (int i = 1; i < numFighters; i++) {
@@ -183,7 +186,7 @@ public:
 		for (int start = 1; start < numFighters; start++) {
 			prev = start - 1; 
 			temp = bayList[start]; 
-			// shift fighters to the right until the correct position for temp is found
+			// move elements of bayList[0..start-1], that are less than temp, to one position ahead of their current position
 			while (prev >= 0 && bayList[prev]->getStructStrength() < temp->getStructStrength()) {
 				bayList[prev + 1] = bayList[prev]; 
 				prev--; 
@@ -320,6 +323,8 @@ Carrier* readCarrier(istream& in) {
 	getline(in >> std::ws, carrierName);
 	stripTrailingWhitespace(carrierName);
 
+
+	// Check if reading the carrier name failed
 	if (in.fail()) {
 		return nullptr;
 	}
@@ -327,6 +332,7 @@ Carrier* readCarrier(istream& in) {
 	int maxBays, numFightersListed;
 	in >> maxBays >> numFightersListed;
 
+	// Check if reading the maximum bays and number of fighters failed
 	if (in.fail()) {
 		return nullptr;
 	}
@@ -502,23 +508,28 @@ int main()
 		return 1;
 	}
 
+	// Sort the fighters in each carrier by name using merge sort
 	c1->mergeSortByName();
 	c2->mergeSortByName();
 
+	// Display the information of both carriers before the battle
 	c1->getInfo(); 
 	c2->getInfo();
 
+	// Print the information of both carriers before the battle
 	cout << c1->getInfo();
 	cout << c2->getInfo();
 
 
 
-
+	// Simulate the battle between the two carriers
 	battle(*c1, *c2, rng);
 	
+	// Print the information of both carriers after the battle
 	cout<<c1->getInfo();
 	cout<<c2->getInfo();
 
+	// Clean up dynamically allocated memory for the carriers
 	delete c1;
 	delete c2;
 
