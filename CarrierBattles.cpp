@@ -17,6 +17,8 @@ using namespace std;
 constexpr int HIT_THRESHOLD = 50;   // a roll of 50-100 out of 100 is a hit
 constexpr int REPAIR_PERCENT = 5;   // repair 5% of max structural strength
 
+
+// 
 class Fighter {
 private:
 	string name;
@@ -25,6 +27,7 @@ private:
 	int maxStructStrength;
 
 public:
+	// Constructor with setting the name, max structural strength, and damage of the fighter
 	Fighter(const string& name, int maxStructStrength, int damage) {
 		this->name = name;
 		this->damage = damage;
@@ -33,7 +36,7 @@ public:
 
 	}
 
-
+	// reduce the structural strength of the fighter by a given amount, ensuring it does not go below zero
 	void reduceStructure(int amount) {
 		structStrength -= amount;
 		if (structStrength < 0) {
@@ -42,6 +45,7 @@ public:
 
 	}
 
+	// repair the fighter by a given amount, ensuring it does not exceed the maximum structural strength
 	void repair(int amount) {
 		structStrength += amount;
 		if (structStrength > maxStructStrength) {
@@ -49,6 +53,8 @@ public:
 		}
 	}
 
+
+	// check if the fighter is destroyed (structural strength is zero or less)
 	bool isDestroyed() const {
 		if (structStrength <= 0) {
 			return true;
@@ -60,6 +66,7 @@ public:
 	}
 
 
+	// Getters for the fighter's name, damage, structural strength, and maximum structural strength
 	const string& getName() const {
 		return name;
 	}
@@ -76,7 +83,7 @@ public:
 		return maxStructStrength;
 	}
 
-
+	// Get a string representation of the fighter's information
 	string getInfo() const {
 		ostringstream oss;
 		oss << "Name: " << name << "\n";
@@ -99,10 +106,11 @@ private:
 	int numFighters; 
 public:
 
+	// Delete copy constructor and assignment operator to prevent copying of Carrier objects
 	Carrier(const Carrier&) = delete;
 	Carrier& operator=(const Carrier&) = delete;
 
-
+	// Constructor to initialize the carrier with a name and maximum number of bays
 	Carrier(const string& name, int maxBays) {
 		this->name = name; 
 		this->maxBays = maxBays; 
@@ -110,6 +118,7 @@ public:
 		this->numFighters = 0; 
 	}
 
+	// Destructor to clean up dynamically allocated memory for the bay list and fighters
 	~Carrier() {
 
 		for (int i = 0; i < numFighters; i++) {
@@ -122,6 +131,7 @@ public:
 		bayList = nullptr; 
 	}
 
+	// Load a fighter into the carrier's bay list if there is space available
 
 	bool loadFighter(Fighter* fighter) {
 		if (numFighters < maxBays) {
@@ -132,6 +142,7 @@ public:
 		return false; 
 	}
 
+	// Launch the next fighter from the carrier's bay list, removing it from the list and returning it
 	Fighter* launchNextFighter() {
 
 		if (numFighters == 0) {
@@ -150,6 +161,8 @@ public:
 		return removedFighter;
 		
 	}
+
+	// Repair all fighters in the carrier's bay list by a percentage of their maximum structural strength
 	
 	void repairAllFighters() {
 		for (int i = 0; i < numFighters; i++) {
@@ -162,15 +175,15 @@ public:
 
 
 
-
+	// Sort the fighters in the carrier's bay list by their structural strength using insertion sort
 	void insertionSortByStrength() {
 		
-		// sort the array by structStrength
+		
 		Fighter* temp; int prev;
 		for (int start = 1; start < numFighters; start++) {
 			prev = start - 1; 
 			temp = bayList[start]; 
-			
+			// shift fighters to the right until the correct position for temp is found
 			while (prev >= 0 && bayList[prev]->getStructStrength() < temp->getStructStrength()) {
 				bayList[prev + 1] = bayList[prev]; 
 				prev--; 
@@ -184,12 +197,12 @@ public:
 
 
 
-
+	// just calls the mergesort worker function 
 	void mergeSortByName() {
 		mergeSortWorker(0,numFighters-1);
 	}
 
-
+	// uses recursion to sort the fighters using the merge helper function. recursion keeps on splitting the array and then merges  them into the correct spots
 	void mergeSortWorker(int lower, int upper) {
 		int mid; 
 		if (lower < upper) {
@@ -200,6 +213,8 @@ public:
 		}
 	}
 
+	// uses a basic merge helper function but the difference here is that i compare the names of the fighters 
+	// by putting them into temporary variables and then store the smaller one into the temp array and then copy the temp array back into the original array
 	void merge(int lo,int mid,int hi) {
 		int i, j,  k; 
 		int size = hi - lo + 1; 
@@ -236,6 +251,7 @@ public:
 		delete[] temp; 
 	}
 
+	// Check if the carrier has any fighters loaded
 	bool hasFighters() const {
 		if (numFighters > 0) {
 			return true; 
@@ -244,21 +260,21 @@ public:
 		return false; 
 	}
 
-
+	// Get the number of fighters currently loaded in the carrier
 	int getNumFighters() const {
 		return numFighters; 
 	}
 
-
+	// Get the maximum capacity of the carrier (number of bays)
 	int getCapacity() const {
 		return maxBays; 
 	}
-
+	// Get the name of the carrier
 	const string& getName() const{
 		return name; 
 	}
 
-
+	// Get a string representation of the carrier's information, including its name, number of fighters, and details of each fighter
 	string getInfo() const {
 
 
@@ -291,14 +307,14 @@ public:
 };
 
 
-
+// Helper function to strip trailing whitespace from a string
 void stripTrailingWhitespace(string& s) {
 	while (!s.empty() && isspace(static_cast<unsigned char>(s.back()))) {
 		s.pop_back();
 	}
 }
 
-
+// Read a carrier and its fighters from an input stream stores info from the file into variables and then creates appropriete objefcts based on those variables
 Carrier* readCarrier(istream& in) {
 	string carrierName;
 	getline(in >> std::ws, carrierName);
@@ -348,13 +364,14 @@ Carrier* readCarrier(istream& in) {
 	return c;
 }
 
+// Roll a die with a given number of sides using the provided random number generator
 int rollDie(std::mt19937& rng, int sides)
 {
 	uniform_int_distribution<int> dist(1, sides);
 	return dist(rng);
 }
 
-
+// Simulate an attack from one fighter to another, returning true if the defender is destroyed
 bool attack(Fighter& attacker, Fighter& defender, int round, std::mt19937& rng) {
 	// Roll a die to determine if the attack hits
 	int roll = rollDie(rng, 100);
@@ -379,9 +396,11 @@ bool attack(Fighter& attacker, Fighter& defender, int round, std::mt19937& rng) 
 	}
 
 }
-
+// Simulate a duel between two fighters, returning the winner
+// we use the attack helper function so they can redunce each others structural strength and then we check if either of them is destroyed and return the winner
 Fighter* duel(Fighter* f1, Fighter* f2, std::mt19937& rng) {
 	int counter = 0;
+	// shouldnt use while true but its faster to implement so i left this here and dont feel like changing it tn
 	while (true) {
 		counter++;
 		int whoGoesFirst = rollDie(rng, 2);
@@ -411,7 +430,7 @@ Fighter* duel(Fighter* f1, Fighter* f2, std::mt19937& rng) {
 	}
 
 }
-
+// Simulate a battle between two carriers, where each carrier launches fighters to duel until one carrier has no fighters left
 void battle(Carrier& c1, Carrier& c2, std::mt19937& rng) {
 	int duels = 0;
 	while (c1.hasFighters() && c2.hasFighters()) {
@@ -458,9 +477,11 @@ void battle(Carrier& c1, Carrier& c2, std::mt19937& rng) {
 	}
 }
 	
-
+// Main function to read carriers from a file, sort their fighters, and simulate a battle between them
 int main()
 {
+
+	// 
 
 	mt19937 rng(12345); // Initialize with random seed i think is what this does
 	
