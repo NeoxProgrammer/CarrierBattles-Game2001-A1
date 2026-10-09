@@ -188,12 +188,11 @@ public:
 			temp = bayList[start]; 
 			// move elements of bayList[0..start-1], that are less than temp, to one position ahead of their current position
 			while (prev >= 0 && bayList[prev]->getStructStrength() < temp->getStructStrength()) {
-				bayList[prev + 1] = bayList[prev]; 
-				prev--; 
+				bayList[prev + 1] = bayList[prev]; // if its less then move it to the right basically 
+				prev--;
 			}
 			bayList[prev + 1] = temp; 
 		}
-
 	}
 
 
@@ -489,7 +488,7 @@ int main()
 
 	// 
 
-	mt19937 rng(12345); // Initialize with random seed i think is what this does
+	mt19937 rng(12345); // Initialize with random predetermined seed
 	
 
 	ifstream in("shipData_small.txt");
